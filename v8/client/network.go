@@ -78,6 +78,8 @@ func (cl *Client) sendToKDC(b []byte, realm string) ([]byte, error) {
 func (cl *Client) sendKDCUDP(realm string, b []byte) ([]byte, error) {
 	var r []byte
 	_, kdcs, err := cl.Config.GetKDCs(realm, false)
+	fmt.Printf("sendKDCTCP %+v ", kdcs)
+
 	if err != nil {
 		return r, err
 	}
