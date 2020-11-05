@@ -100,6 +100,8 @@ func dialSendUDP(kdcs map[int]string, b []byte) ([]byte, error) {
 			continue
 		}
 
+		fmt.Printf("dialSendUDP %+v \n", udpAddr)
+
 		conn, err := net.DialTimeout("udp", udpAddr.String(), 5*time.Second)
 		if err != nil {
 			errs = append(errs, fmt.Sprintf("error setting dial timeout on connection to %s: %v", kdcs[i], err))
