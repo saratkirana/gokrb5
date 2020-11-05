@@ -17,6 +17,7 @@ func (c *Config) GetKDCs(realm string, tcp bool) (int, map[int]string, error) {
 	}
 	kdcs := make(map[int]string)
 	var count int
+	fmt.Printf("getkdcs total %v", c.Realms)
 
 	// Get the KDCs from the krb5.conf.
 	var ks []string
@@ -24,6 +25,7 @@ func (c *Config) GetKDCs(realm string, tcp bool) (int, map[int]string, error) {
 		if r.Realm != realm {
 			continue
 		}
+		fmt.Printf("getkdcs %v", r)
 		ks = r.KDC
 	}
 	count = len(ks)
