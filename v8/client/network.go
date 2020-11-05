@@ -227,7 +227,10 @@ func sendTCP(conn *net.TCPConn, b []byte) ([]byte, error) {
 func checkForKRBError(b []byte) ([]byte, error) {
 	var KRBErr messages.KRBError
 	if err := KRBErr.Unmarshal(b); err == nil {
+		fmt.Printf("checkForKRBError %+v", err)
 		return b, KRBErr
 	}
+	fmt.Printf("checkForKRBError return %+v", KRBErr)
+
 	return b, nil
 }
