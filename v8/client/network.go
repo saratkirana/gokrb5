@@ -16,7 +16,9 @@ import (
 // SendToKDC performs network actions to send data to the KDC.
 func (cl *Client) sendToKDC(b []byte, realm string) ([]byte, error) {
 	var rb []byte
+	fmt.Printf("SendtoKDC ", cl.Config.LibDefaults.UDPPreferenceLimit)
 	if cl.Config.LibDefaults.UDPPreferenceLimit == 1 {
+		fmt.Printf("1")
 		//1 means we should always use TCP
 		rb, errtcp := cl.sendKDCTCP(realm, b)
 		if errtcp != nil {
@@ -28,6 +30,8 @@ func (cl *Client) sendToKDC(b []byte, realm string) ([]byte, error) {
 		return rb, nil
 	}
 	if len(b) <= cl.Config.LibDefaults.UDPPreferenceLimit {
+		fmt.Printf("2")
+
 		//Try UDP first, TCP second
 		rb, errudp := cl.sendKDCUDP(realm, b)
 		if errudp != nil {
@@ -49,6 +53,8 @@ func (cl *Client) sendToKDC(b []byte, realm string) ([]byte, error) {
 		}
 		return rb, nil
 	}
+	fmt.Printf("3")
+
 	//Try TCP first, UDP second
 	rb, errtcp := cl.sendKDCTCP(realm, b)
 	if errtcp != nil {
@@ -136,6 +142,7 @@ func sendUDP(conn *net.UDPConn, b []byte) ([]byte, error) {
 func (cl *Client) sendKDCTCP(realm string, b []byte) ([]byte, error) {
 	var r []byte
 	_, kdcs, err := cl.Config.GetKDCs(realm, true)
+	fmt.Printf("sendKDCTCP %+v ", kdcs)
 	if err != nil {
 		return r, err
 	}
