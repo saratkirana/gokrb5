@@ -1,6 +1,7 @@
 package client
 
 import (
+	"fmt"
 	"github.com/jcmturner/gokrb5/v8/iana/flags"
 	"github.com/jcmturner/gokrb5/v8/iana/nametype"
 	"github.com/jcmturner/gokrb5/v8/krberror"
@@ -26,6 +27,8 @@ func (cl *Client) TGSExchange(tgsReq messages.TGSReq, kdcRealm string, tgt messa
 	if err != nil {
 		return tgsReq, tgsRep, krberror.Errorf(err, krberror.EncodingError, "TGS Exchange Error: failed to marshal TGS_REQ")
 	}
+	fmt.Printf("TGSExchange first realm \n", kdcRealm)
+
 	r, err := cl.sendToKDC(b, kdcRealm)
 	if err != nil {
 		if _, ok := err.(messages.KRBError); ok {

@@ -78,7 +78,7 @@ func (cl *Client) sendToKDC(b []byte, realm string) ([]byte, error) {
 func (cl *Client) sendKDCUDP(realm string, b []byte) ([]byte, error) {
 	var r []byte
 	_, kdcs, err := cl.Config.GetKDCs(realm, false)
-	fmt.Printf("sendKDCTCP %+v realmss %s", kdcs, realm)
+	fmt.Printf("sendKDCTCP %+v realmss %s \n", kdcs, realm)
 
 	if err != nil {
 		return r, err
@@ -104,16 +104,20 @@ func dialSendUDP(kdcs map[int]string, b []byte) ([]byte, error) {
 
 		conn, err := net.DialTimeout("udp", udpAddr.String(), 5*time.Second)
 		if err != nil {
+			fmt.Printf("dialSendUDP error 1 %+v \n", err)
+
 			errs = append(errs, fmt.Sprintf("error setting dial timeout on connection to %s: %v", kdcs[i], err))
 			continue
 		}
 		if err := conn.SetDeadline(time.Now().Add(5 * time.Second)); err != nil {
+			fmt.Printf("dialSendUDP error 2 %+v \n", err)
 			errs = append(errs, fmt.Sprintf("error setting deadline on connection to %s: %v", kdcs[i], err))
 			continue
 		}
 		// conn is guaranteed to be a UDPConn
 		rb, err := sendUDP(conn.(*net.UDPConn), b)
 		if err != nil {
+			fmt.Printf("dialSendUDP error 3 %+v \n", err)
 			errs = append(errs, fmt.Sprintf("error sneding to %s: %v", kdcs[i], err))
 			continue
 		}
