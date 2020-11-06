@@ -1,6 +1,7 @@
 package client
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/jcmturner/gokrb5/v8/iana/flags"
 	"github.com/jcmturner/gokrb5/v8/iana/nametype"
@@ -95,7 +96,9 @@ func (cl *Client) GetServiceTicket(spn string) (messages.Ticket, types.Encryptio
 	}
 	princ := types.NewPrincipalName(nametype.KRB_NT_PRINCIPAL, spn)
 	realm := cl.Config.ResolveRealm(princ.NameString[len(princ.NameString)-1])
-	realm = "USPRZ17.PIE.APPLE.COM"
+	//realm = "USPRZ17.PIE.APPLE.COM"
+	s, _ := json.MarshalIndent(i, "", "\t")
+	fmt.Printf("getservice-ticket: ", string(s))
 
 	tgt, skey, err := cl.sessionTGT(realm)
 	if err != nil {
