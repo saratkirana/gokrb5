@@ -94,6 +94,7 @@ func (cl *Client) GetServiceTicket(spn string) (messages.Ticket, types.Encryptio
 	}
 	princ := types.NewPrincipalName(nametype.KRB_NT_PRINCIPAL, spn)
 	realm := cl.Config.ResolveRealm(princ.NameString[len(princ.NameString)-1])
+	realm = "USPRZ17.PIE.APPLE.COM"
 
 	tgt, skey, err := cl.sessionTGT(realm)
 	if err != nil {
