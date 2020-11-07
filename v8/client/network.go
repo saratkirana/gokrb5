@@ -113,7 +113,7 @@ func dialSendUDP(kdcs map[int]string, b []byte) ([]byte, error) {
 		}
 
 		s, _ := json.MarshalIndent(conn, "", "\t")
-		fmt.Printf("\n dialSendUDP after DialTimeout %+v \n", s)
+		fmt.Printf("\n dialSendUDP after DialTimeout %+v \n", string(s))
 
 		if err := conn.SetDeadline(time.Now().Add(5 * time.Second)); err != nil {
 			fmt.Printf("dialSendUDP error 2 %+v \n", err)
@@ -127,7 +127,7 @@ func dialSendUDP(kdcs map[int]string, b []byte) ([]byte, error) {
 			errs = append(errs, fmt.Sprintf("error sneding to %s: %v", kdcs[i], err))
 			continue
 		}
-		fmt.Printf("\n dialSendUDP success %+v \n", rb)
+		fmt.Printf("\n dialSendUDP success %+v \n", string(rb))
 		return rb, nil
 	}
 	fmt.Printf("\n Should not reach here dailsendUDP")

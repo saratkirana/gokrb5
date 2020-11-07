@@ -27,7 +27,7 @@ func (cl *Client) TGSREQGenerateAndExchange(spn types.PrincipalName, kdcRealm st
 func (cl *Client) TGSExchange(tgsReq messages.TGSReq, kdcRealm string, tgt messages.Ticket, sessionKey types.EncryptionKey, referral int) (messages.TGSReq, messages.TGSRep, error) {
 	var tgsRep messages.TGSRep
 	s, _ := json.MarshalIndent(tgsReq, "", "\t")
-	fmt.Printf("\n TGSExchange request %+v \n", s)
+	fmt.Printf("\n TGSExchange request %+v \n", string(s))
 
 	b, err := tgsReq.Marshal()
 	if err != nil {
