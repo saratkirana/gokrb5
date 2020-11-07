@@ -112,7 +112,7 @@ func newLibDefaults() LibDefaults {
 		RealmTryDomains:         -1,
 		SafeChecksumType:        8,
 		TicketLifetime:          time.Duration(24) * time.Hour,
-		UDPPreferenceLimit:      1,
+		UDPPreferenceLimit:      1465,
 		PreferredPreauthTypes:   []int{17, 16, 15, 14},
 	}
 }
