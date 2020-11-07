@@ -279,7 +279,10 @@ func (cl *Client) sessionTGT(realm string) (tgt messages.Ticket, sessionKey type
 		err = fmt.Errorf("could not find TGT session for %s", realm)
 		return
 	}
+	fmt.Printf("\n I am at sessionTGT, got session %+v for  %s",s,  realm)
 	_, tgt, sessionKey = s.tgtDetails()
+	fmt.Printf("\n I am at sessionTGT, got tgt %+v for  %s", tgt,  realm)
+
 	return
 }
 

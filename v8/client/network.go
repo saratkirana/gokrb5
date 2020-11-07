@@ -85,6 +85,7 @@ func (cl *Client) sendKDCUDP(realm string, b []byte) ([]byte, error) {
 	}
 	r, err = dialSendUDP(kdcs, b)
 	if err != nil {
+		fmt.Printf("\n sendKDCUDP error %+v", err)
 		return r, err
 	}
 	return checkForKRBError(r)
@@ -100,7 +101,7 @@ func dialSendUDP(kdcs map[int]string, b []byte) ([]byte, error) {
 			continue
 		}
 
-		fmt.Printf("dialSendUDP %+v \n", udpAddr)
+		fmt.Printf("\n dialSendUDP %+v \n", udpAddr)
 
 		conn, err := net.DialTimeout("udp", udpAddr.String(), 5*time.Second)
 		if err != nil {
@@ -109,6 +110,9 @@ func dialSendUDP(kdcs map[int]string, b []byte) ([]byte, error) {
 			errs = append(errs, fmt.Sprintf("error setting dial timeout on connection to %s: %v", kdcs[i], err))
 			continue
 		}
+
+		fmt.Printf("\n dialSendUDP after DialTimeout %+v \n", conn)
+
 		if err := conn.SetDeadline(time.Now().Add(5 * time.Second)); err != nil {
 			fmt.Printf("dialSendUDP error 2 %+v \n", err)
 			errs = append(errs, fmt.Sprintf("error setting deadline on connection to %s: %v", kdcs[i], err))
@@ -121,8 +125,10 @@ func dialSendUDP(kdcs map[int]string, b []byte) ([]byte, error) {
 			errs = append(errs, fmt.Sprintf("error sneding to %s: %v", kdcs[i], err))
 			continue
 		}
+		fmt.Printf("\n dialSendUDP success %+v \n", rb)
 		return rb, nil
 	}
+	fmt.Printf("\n Should not reach here dailsendUDP")
 	return nil, fmt.Errorf("error sending to a KDC: %s", strings.Join(errs, "; "))
 }
 
