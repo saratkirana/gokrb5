@@ -2,6 +2,7 @@ package client
 
 import (
 	"encoding/binary"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -111,7 +112,8 @@ func dialSendUDP(kdcs map[int]string, b []byte) ([]byte, error) {
 			continue
 		}
 
-		fmt.Printf("\n dialSendUDP after DialTimeout %+v \n", conn)
+		s, _ := json.MarshalIndent(conn, "", "\t")
+		fmt.Printf("\n dialSendUDP after DialTimeout %+v \n", s)
 
 		if err := conn.SetDeadline(time.Now().Add(5 * time.Second)); err != nil {
 			fmt.Printf("dialSendUDP error 2 %+v \n", err)
