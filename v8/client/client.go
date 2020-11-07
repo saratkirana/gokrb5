@@ -205,6 +205,7 @@ func (cl *Client) AffirmLogin() error {
 
 // realmLogin obtains or renews a TGT and establishes a session for the realm specified.
 func (cl *Client) realmLogin(realm string) error {
+	fmt.Printf("\n I am at realmLogin %s", realm)
 	if realm == cl.Credentials.Domain() {
 		return cl.Login()
 	}

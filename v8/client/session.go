@@ -215,6 +215,8 @@ func (cl *Client) enableAutoSessionRenewal(s *session) {
 
 // renewTGT renews the client's TGT session.
 func (cl *Client) renewTGT(s *session) error {
+	fmt.Println("\n Im renewTGT %+v", s)
+
 	realm, tgt, skey := s.tgtDetails()
 	spn := types.PrincipalName{
 		NameType:   nametype.KRB_NT_SRV_INST,
@@ -233,6 +235,7 @@ func (cl *Client) renewTGT(s *session) error {
 // refreshSession updates either through renewal or creating a new login.
 // The boolean indicates if the update was a renewal.
 func (cl *Client) refreshSession(s *session) (bool, error) {
+	fmt.Printf("\n I am refreshSession %+V", s)
 	s.mux.RLock()
 	realm := s.realm
 	renewTill := s.renewTill
@@ -248,6 +251,7 @@ func (cl *Client) refreshSession(s *session) (bool, error) {
 
 // ensureValidSession makes sure there is a valid session for the realm
 func (cl *Client) ensureValidSession(realm string) error {
+	fmt.Printf("\n I am ensureValidSession %s", realm)
 	s, ok := cl.sessions.get(realm)
 	if ok {
 		s.mux.RLock()
@@ -265,6 +269,7 @@ func (cl *Client) ensureValidSession(realm string) error {
 
 // sessionTGTDetails is a thread safe way to get the TGT and session key values for a realm
 func (cl *Client) sessionTGT(realm string) (tgt messages.Ticket, sessionKey types.EncryptionKey, err error) {
+	fmt.Printf("\n I am at sessionTGT %s", realm)
 	err = cl.ensureValidSession(realm)
 	if err != nil {
 		return

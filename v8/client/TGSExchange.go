@@ -12,7 +12,7 @@ import (
 
 // TGSREQGenerateAndExchange generates the TGS_REQ and performs a TGS exchange to retrieve a ticket to the specified SPN.
 func (cl *Client) TGSREQGenerateAndExchange(spn types.PrincipalName, kdcRealm string, tgt messages.Ticket, sessionKey types.EncryptionKey, renewal bool) (tgsReq messages.TGSReq, tgsRep messages.TGSRep, err error) {
-	fmt.Println("Im here %s, %+v", kdcRealm, spn)
+	fmt.Println("\n Im here %s, %+v, %t", kdcRealm, spn, renewal)
 	//kdcRealm = "USPRZ17.PIE.APPLE.COM"
 	tgsReq, err = messages.NewTGSReq(cl.Credentials.CName(), kdcRealm, cl.Config, tgt, sessionKey, spn, renewal)
 	if err != nil {
@@ -98,15 +98,19 @@ func (cl *Client) GetServiceTicket(spn string) (messages.Ticket, types.Encryptio
 	realm := cl.Config.ResolveRealm(princ.NameString[len(princ.NameString)-1])
 	//realm = "USPRZ17.PIE.APPLE.COM"
 	s, _ := json.MarshalIndent(cl, "", "\t")
-	fmt.Printf("getservice-ticket: ", string(s))
+	fmt.Printf("\n getservice-ticket: ", string(s), princ, realm)
 
 	tgt, skey, err := cl.sessionTGT(realm)
 	if err != nil {
 		return tkt, skey, err
 	}
+
+	fmt.Printf("\n Crossed sessionTGT in GetServiceTicket")
 	_, tgsRep, err := cl.TGSREQGenerateAndExchange(princ, realm, tgt, skey, false)
 	if err != nil {
 		return tkt, skey, err
 	}
+
+	fmt.Printf("\n Crossed TGSREQGenerateAndExchange in GetServiceTicket")
 	return tgsRep.Ticket, tgsRep.DecryptedEncPart.Key, nil
 }
