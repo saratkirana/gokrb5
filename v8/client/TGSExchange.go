@@ -26,6 +26,9 @@ func (cl *Client) TGSREQGenerateAndExchange(spn types.PrincipalName, kdcRealm st
 // The client's cache is updated with the ticket received.
 func (cl *Client) TGSExchange(tgsReq messages.TGSReq, kdcRealm string, tgt messages.Ticket, sessionKey types.EncryptionKey, referral int) (messages.TGSReq, messages.TGSRep, error) {
 	var tgsRep messages.TGSRep
+	s, _ := json.MarshalIndent(tgsReq, "", "\t")
+	fmt.Printf("\n TGSExchange request %+v \n", s)
+
 	b, err := tgsReq.Marshal()
 	if err != nil {
 		return tgsReq, tgsRep, krberror.Errorf(err, krberror.EncodingError, "TGS Exchange Error: failed to marshal TGS_REQ")
